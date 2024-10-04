@@ -1,3 +1,85 @@
-<main>
-  <h1>Bienvenido al dashboard</h1>
+<main class="bg-gray-900 text-white h-screen flex flex-col">
+  <header class="bg-gray-800 p-4">
+    <h1 class="text-2xl font-bold">Dashboard de Administración</h1>
+  </header>
+
+  <div class="container mx-auto p-6 flex-grow">
+    <div class="mb-8">
+      <h2 class="text-xl font-bold mb-4">Agregar Nuevo Juego</h2>
+      <form action="/add-game" method="POST" class="bg-gray-800 p-6 rounded-lg shadow-md">
+        <div class="mb-4">
+          <label for="title" class="block text-sm mb-2">Título</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            required
+            class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            placeholder="Ingresa el título del juego"
+          />
+        </div>
+
+        <div class="mb-4">
+          <label for="description" class="block text-sm mb-2">Descripción</label>
+          <textarea
+            id="description"
+            name="description"
+            required
+            rows="4"
+            class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            placeholder="Ingresa la descripción del juego"
+          ></textarea>
+        </div>
+
+        <div class="mb-4">
+          <label for="img" class="block text-sm mb-2">Imagen URL</label>
+          <input
+            type="text"
+            id="img"
+            name="img"
+            required
+            class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
+            placeholder="Ingresa la URL de la imagen"
+          />
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 hover:bg-blue-500 transition duration-300 ease-in-out text-white py-2 rounded"
+        >
+          Agregar Juego
+        </button>
+      </form>
+    </div>
+
+    <div>
+      <h2 class="text-xl font-bold mb-4">Juegos Existentes</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full bg-gray-800 rounded-lg shadow-md">
+          <thead>
+            <tr>
+              <th class="py-2 px-4 border-b border-gray-600 text-left">Título</th>
+              <th class="py-2 px-4 border-b border-gray-600 text-left">Descripción</th>
+              <th class="py-2 px-4 border-b border-gray-600 text-left">Imagen</th>
+              <th class="py-2 px-4 border-b border-gray-600 text-left">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Este es un ejemplo de cómo podría verse una fila de juego -->
+            {{#each games}}
+              <tr class="hover:bg-gray-700">
+                <td class="py-2 px-4 border-b border-gray-600">{{this.title}}</td>
+                <td class="py-2 px-4 border-b border-gray-600">{{this.description}}</td>
+                <td class="py-2 px-4 border-b border-gray-600"><img src="/public/images/{{this.img}}" alt="{{this.title}}" class="w-16 h-16 object-cover"/></td>
+                <td class="py-2 px-4 border-b border-gray-600">
+                  <a href="/edit-game/{{this.id}}" class="text-blue-500 hover:text-blue-400">Editar</a>
+                  <a href="/delete-game/{{this.id}}" class="text-red-500 hover:text-red-400 ml-4">Eliminar</a>
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </main>
