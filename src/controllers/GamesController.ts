@@ -1,15 +1,61 @@
 import { Request, Response } from "express";
 import { GameModel } from "../models/GameModel";
+import { sequelize } from "../db";
 
 export async function showIndex(req: Request, res: Response) {
-  const title = "Nuestros juegos";
-  const games = await GameModel.findAll()
+  const { category } = req.query;
+  const games = await GameModel.findAll();
+  let filteredGames = games;
+  if (category) {
+    filteredGames = games.filter((game: any) =>
+      game.tags.includes(category as string)
+    );
+  }
+
   const jsonGames = games.map((game) => game.toJSON());
-  res.render("index", { title, games: jsonGames });
+  const jsonGamesFiltered = filteredGames.map((game) => game.toJSON());
+
+  // Extraer y procesar las categorías
+  const categoriesArray = jsonGames.map((game) => game.tags);
+  // Paso 1: Parsear las cadenas JSON
+  const parsedCategories = categoriesArray.map((item) => JSON.parse(item));
+
+  // Paso 2: Aplanar el array
+  const flatCategories = parsedCategories.flat();
+
+  // Paso 3: Filtrar categorías únicas
+  const uniqueCategories = Array.from(new Set(flatCategories));
+
+  res.render("index", {
+    title: "Nuestros Juegos",
+    games: filteredGames.length ? jsonGamesFiltered : jsonGames,
+    categories: uniqueCategories,
+  });
 }
 
 export async function showGame(req: Request, res: Response) {
   const { id } = req.params;
+  const game = await GameModel.findByPk(id);
 
-  res.send(`Mostrando el juego con id ${id}`);
+  if (!game) {
+    res.status(404).send("Juego no encontrado");
+    return;
+  }
+
+  // Convertir el juego a JSON
+  const gameData = game.toJSON();
+
+  // Obtener la categoría del juego actual
+  const categories = gameData.tags; // Supongamos que tags son las categorías
+
+  // Obtener juegos relacionados por categoría
+  const relatedGames = await sequelize.query(`
+    SELECT * FROM Games WHERE tags LIKE '%${categories[0]}%' AND id != ${id} LIMIT 3
+    `);
+
+  res.render("game", {
+    title: gameData.title,
+    game: gameData,
+    relatedGames: relatedGames[0],
+  });
 }

@@ -1,17 +1,45 @@
 <main class="bg-gray-900 text-white">
-  <header class="flex justify-between items-center p-4 bg-gray-800">
-    <img height="50" width="50" src="/public/images/logo.svg" alt="logo" />
-    <h1 class="text-2xl font-bold">Game Library</h1>
-    <button
-      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-    >
-      Iniciar Sesión
-    </button>
-  </header>
+  {{> header}}
+
   <div class="container mx-auto p-4">
-    <div
-      class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-    >
+    <!-- Sección de Categorías -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold mb-4">Categorías</h2>
+      <div class="flex space-x-4">
+        {{#each categories}}
+          <a
+            class="category-link bg-gray-800 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
+            href="/?category={{this}}"
+          >
+            <span class="py-2 px-4 rounded">{{this}}</span>
+          </a>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Sección de Juegos Destacados -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-bold mb-4">Juegos Destacados</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {{#each featuredGames}}
+          <div
+            onclick="window.location.href = '/game/{{this.id}}'"
+            class="bg-gray-800 p-4 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
+          >
+            <img
+              src="/public/images/{{this.img}}"
+              alt="Featured Game"
+              class="w-full h-48 object-cover rounded-lg mb-4"
+            />
+            <h2 class="text-lg font-bold">{{this.title}}</h2>
+            <p class="mt-2">{{this.description}}</p>
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+    <!-- Sección de Juegos -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {{#each games}}
         <div
           onclick="window.location.href = '/game/{{this.id}}'"
@@ -28,4 +56,27 @@
       {{/each}}
     </div>
   </div>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 p-4 text-center">
+    <p class="text-gray-400">© 2024 Game Library. Todos los derechos reservados.</p>
+    <div class="mt-2">
+      <a href="#" class="text-gray-400 hover:text-white mx-2">Facebook</a>
+      <a href="#" class="text-gray-400 hover:text-white mx-2">Twitter</a>
+      <a href="#" class="text-gray-400 hover:text-white mx-2">Instagram</a>
+    </div>
+  </footer>
 </main>
+
+<script>
+  // Obtiene los parámetros de la URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedCategory = urlParams.get('category');
+
+  // Aquí puedes implementar la lógica para resaltar la categoría seleccionada
+  document.querySelectorAll('.category-link').forEach(link => {
+    if (link.href.includes(`?category=${selectedCategory}`)) {
+      link.classList.add('bg-blue-700', 'text-white');
+    }
+  });
+</script>

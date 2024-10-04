@@ -17,6 +17,12 @@ const GameModel = sequelize.define("Game", {
     downloadLink: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    // Las tags son para las categorias de los juegos
+    // Ejemplo: "Aventura, Acción, Shooter"
+    tags: {
+        type: DataTypes.JSON,
+        allowNull: true,
     }
 });
 
