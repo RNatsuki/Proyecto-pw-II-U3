@@ -6,4 +6,5 @@ const router = Router();
 router.get("/login", showLogin);
 router.post("/login", login);
 router.get("/dashboard", [AdminOnly], showDashboard);
+
 export { router as AuthRouter };

@@ -59,3 +59,22 @@ export async function showGame(req: Request, res: Response) {
     relatedGames: relatedGames[0],
   });
 }
+
+export async function addGame(req: Request, res: Response) {
+  const {
+    title,
+    description,
+    tags,
+  } = req.body;
+
+  // Crear un nuevo juego
+  await GameModel.create({
+    title,
+    description,
+    tags,
+    img: req.file?.filename || "default.png",
+    downloadLink: "https://example.com",
+  });
+
+  res.redirect("/dashboard");
+}
