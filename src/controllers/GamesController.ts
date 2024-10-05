@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GameModel } from "../models/GameModel";
 import { sequelize } from "../db";
-
+import { upload } from "../utils/multer";
 export async function showIndex(req: Request, res: Response) {
   const { category } = req.query;
   const games = await GameModel.findAll();
@@ -61,20 +61,30 @@ export async function showGame(req: Request, res: Response) {
 }
 
 export async function addGame(req: Request, res: Response) {
-  const {
-    title,
-    description,
-    tags,
-  } = req.body;
+  upload(req, res, async (err) => {
+    if (err) {
+      res.status(400).send("Error al subir archivos");
+      return;
+    }
 
-  // Crear un nuevo juego
-  await GameModel.create({
-    title,
-    description,
-    tags,
-    img: req.file?.filename || "default.png",
-    downloadLink: "https://example.com",
+    const { title, description, tags } = req.body;
+    //@ts-ignore
+    const img = req.files["img"][0].filename;
+    //@ts-ignore
+    const zip = req.files["zip"][0].filename;
+
+    try {
+      await GameModel.create({
+        title,
+        description,
+        tags,
+        img,
+        fileName: zip,
+      });
+
+      res.redirect("/");
+    } catch (error) {
+      res.status(400).send("Error al crear el juego");
+    }
   });
-
-  res.redirect("/dashboard");
 }

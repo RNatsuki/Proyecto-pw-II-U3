@@ -33,7 +33,10 @@
         </div>
 
         <div class="mb-4">
-          <label for="description" class="block text-sm mb-2">Descripción</label>
+          <label
+            for="description"
+            class="block text-sm mb-2"
+          >Descripción</label>
           <textarea
             id="description"
             name="description"
@@ -54,30 +57,19 @@
             class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
             placeholder="Ingresa las categorías del juego separadas por comas"
           />
-        <div class="mb-4 mt-4">
-          <label for="img" class="block text-sm mb-2">Selecciona la imagen del juego</label>
-          <input
-            type="file"
-            id="img"
-            name="img"
-            required
-            class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-            placeholder="Ingresa la URL de la imagen"
-          />
-        </div>
 
-        <div class="mb-4 mt-4"></div>
-          <label for="img" class="block text-sm mb-2">Selecciona el zip del juego</label>
-          <input
-            type="file"
-            id="zip"
-            name="zip"
-            required
-            class="w-full p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:ring focus:ring-blue-500"
-            placeholder="Ingresa el zip del juego"
-          />
-        </div>
+          <div class="mb-4 mt-4">
+            <label for="zi" class="block text-sm mb-2">Selecciona la imagen del
+              juego</label>
+            <input type="file" id="img" name="img" multiple required />
 
+          </div>
+
+          <div class="mb-4 mt-4">
+          <label for="zip" class="block text-sm mb-2">Selecciona el archivo ZIP
+            del juego</label>
+          <input type="file" id="zip" name="zip" required />
+        </div>
         <button
           type="submit"
           class="w-full bg-blue-600 hover:bg-blue-500 transition duration-300 ease-in-out text-white py-2 rounded"
@@ -93,18 +85,29 @@
         <table class="min-w-full bg-gray-800 rounded-lg shadow-md">
           <thead>
             <tr>
-              <th class="py-2 px-4 border-b border-gray-600 text-left">Título</th>
-              <th class="py-2 px-4 border-b border-gray-600 text-left">Descripción</th>
-              <th class="py-2 px-4 border-b border-gray-600 text-left">Imagen</th>
-              <th class="py-2 px-4 border-b border-gray-600 text-left">Acciones</th>
+              <th
+                class="py-2 px-4 border-b border-gray-600 text-left"
+              >Título</th>
+              <th
+                class="py-2 px-4 border-b border-gray-600 text-left"
+              >Descripción</th>
+              <th
+                class="py-2 px-4 border-b border-gray-600 text-left"
+              >Imagen</th>
+              <th
+                class="py-2 px-4 border-b border-gray-600 text-left"
+              >Acciones</th>
             </tr>
           </thead>
           <tbody>
             {{#each games}}
               <tr class="hover:bg-gray-700">
-                <td class="py-2 px-4 border-b border-gray-600">{{this.title}}</td>
+                <td
+                  class="py-2 px-4 border-b border-gray-600"
+                >{{this.title}}</td>
                 <td class="py-2 px-4 border-b border-gray-600">
-                  <div class="truncate w-[450px]"> <!-- Añadir clase truncate -->
+                  <div class="truncate w-[450px]">
+                    <!-- Añadir clase truncate -->
                     {{this.description}}
                   </div>
                 </td>
@@ -117,7 +120,11 @@
                 </td>
                 <td class="py-2 px-4 border-b border-gray-600">
                   <div class="flex items-center space-x-2">
-                    <form action="/edit-game" method="POST" class="flex items-center">
+                    <form
+                      action="/edit-game"
+                      method="POST"
+                      class="flex items-center"
+                    >
                       <input type="hidden" name="id" value="{{this._id}}" />
                       <button
                         type="submit"
@@ -128,7 +135,11 @@
                       </button>
                     </form>
 
-                    <form action="/delete-game" method="POST" class="flex items-center">
+                    <form
+                      action="/delete-game"
+                      method="POST"
+                      class="flex items-center"
+                    >
                       <input type="hidden" name="id" value="{{this._id}}" />
                       <button
                         type="submit"
@@ -150,9 +161,5 @@
 </main>
 
 <style>
-  .truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 </style>
