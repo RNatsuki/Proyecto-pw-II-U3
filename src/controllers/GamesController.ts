@@ -52,7 +52,6 @@ export async function showGame(req: Request, res: Response) {
   const relatedGames = await sequelize.query(`
     SELECT * FROM Games WHERE tags LIKE '%${categories[0]}%' AND id != ${id} LIMIT 3
     `);
-
   res.render("game", {
     title: gameData.title,
     game: gameData,
@@ -73,17 +72,20 @@ export async function addGame(req: Request, res: Response) {
     //@ts-ignore
     const zip = req.files["zip"][0].filename;
 
+    //tags
+    const arrayTags = JSON.parse(JSON.stringify(tags)).split(",");
     try {
       await GameModel.create({
         title,
         description,
-        tags,
+        tags: arrayTags,
         img,
         fileName: zip,
       });
 
       res.redirect("/");
     } catch (error) {
+      console.log(error);
       res.status(400).send("Error al crear el juego");
     }
   });

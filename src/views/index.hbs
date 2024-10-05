@@ -5,27 +5,33 @@
     <!-- Sección de Categorías -->
     <div class="mb-8">
       <h2 class="text-3xl font-bold mb-4">Categorías</h2>
-      <div class="flex space-x-4">
+      <div class="relative">
+        <div class="overflow-x-auto whitespace-nowrap draggable">
+          <div class="flex space-x-4">
+            <a
+              class="category-link bg-gray-800 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
+              href="/"
+            >
+              <span class="py-2 px-4 rounded">Todos</span>
+            </a>
 
-        <a
-            class="category-link bg-gray-800 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
-            href="/"
-          >
-            <span class="py-2 px-4 rounded">Todos</span>
-          </a>
-
-        {{#each categories}}
-          <a
-            class="category-link bg-gray-800 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
-            href="/?category={{this}}"
-          >
-            <span class="py-2 px-4 rounded">{{this}}</span>
-          </a>
-        {{/each}}
+            {{#each categories}}
+              <a
+                class="category-link bg-gray-800 p-2 rounded-lg cursor-pointer hover:bg-gray-700 transition duration-300 ease-in-out"
+                href="/?category={{this}}"
+              >
+                <span class="py-2 px-4 rounded">{{this}}</span>
+              </a>
+            {{/each}}
+          </div>
+        </div>
+        <div class="scroll-indicator absolute right-2 top-1/2 transform -translate-y-1/2">
+          &#9654; <!-- Flecha a la derecha -->
+        </div>
       </div>
     </div>
 
-    <!-- Sección de Juegos Destacados -->
+    <!-- El resto del código permanece sin cambios -->
     <div class="mb-8">
       <h2 class="text-3xl font-bold mb-4">Juegos Destacados</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -87,4 +93,56 @@
       link.classList.add('bg-blue-700', 'text-white');
     }
   });
+
+  // Funcionalidad de arrastre
+  const draggable = document.querySelector('.draggable');
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  draggable.addEventListener('mousedown', (e) => {
+    isDown = true;
+    startX = e.pageX - draggable.offsetLeft;
+    scrollLeft = draggable.scrollLeft;
+  });
+
+  draggable.addEventListener('mouseleave', () => {
+    isDown = false;
+  });
+
+  draggable.addEventListener('mouseup', () => {
+    isDown = false;
+  });
+
+  draggable.addEventListener('mousemove', (e) => {
+    if (!isDown) return; // Si no se está arrastrando
+    e.preventDefault();
+    const x = e.pageX - draggable.offsetLeft;
+    const walk = (x - startX) * 2; // Ajusta la velocidad de desplazamiento
+    draggable.scrollLeft = scrollLeft - walk;
+  });
 </script>
+
+<style>
+  /* CSS para ocultar la barra de desplazamiento */
+  .overflow-x-auto::-webkit-scrollbar {
+    display: none; /* Ocultar barra para WebKit (Chrome, Safari) */
+  }
+
+  .overflow-x-auto {
+    -ms-overflow-style: none; /* Ocultar barra para Internet Explorer y Edge */
+    scrollbar-width: none; /* Ocultar barra para Firefox */
+  }
+
+  /* Evitar selección de texto */
+  .draggable, .category-link {
+    user-select: none; /* No permitir selección */
+  }
+
+  /* Estilo para el indicador de scroll */
+  .scroll-indicator {
+    font-size: 24px; /* Tamaño de la flecha */
+    color: gray; /* Color de la flecha */
+    pointer-events: none; /* No permitir interacción */
+  }
+</style>
