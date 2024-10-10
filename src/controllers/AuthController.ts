@@ -3,6 +3,11 @@ import { GameModel } from "../models/GameModel";
 import { AuthModel } from "../models/AuthModel";
 
 export async function showLogin(req: Request, res: Response) {
+  if (req.session.user) {
+    res.redirect("/dashboard");
+    return;
+  }
+
   res.render("login");
 }
 
