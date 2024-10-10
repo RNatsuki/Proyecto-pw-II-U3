@@ -90,3 +90,18 @@ export async function addGame(req: Request, res: Response) {
     }
   });
 }
+
+export async function showEditGame(req: Request, res: Response) {
+  const { id } = req.params;
+
+  const game = await GameModel.findByPk(id);
+
+  if (!game) {
+    res.status(404).send("Juego no encontrado");
+    return;
+  }
+  const gameJSON = game.toJSON();
+  gameJSON.tags = JSON.parse(gameJSON.tags).join(",");
+
+  res.render("edit-game", { game: gameJSON });
+}

@@ -121,11 +121,11 @@
                 <td class="py-2 px-4 border-b border-gray-600">
                   <div class="flex items-center space-x-2">
                     <form
-                      action="/edit-game"
-                      method="POST"
+                      action="/edit-game/{{this.id}}"
+                      method="GET"
                       class="flex items-center"
                     >
-                      <input type="hidden" name="id" value="{{this._id}}" />
+                      <input type="hidden" name="id" value="{{this.id}}" />
                       <button
                         type="submit"
                         class="flex items-center bg-blue-600 hover:bg-blue-500 transition duration-300 ease-in-out text-white py-1 px-2 rounded"

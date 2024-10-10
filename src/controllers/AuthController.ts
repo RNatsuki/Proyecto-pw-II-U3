@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { GameModel } from "../models/GameModel";
 import { AuthModel } from "../models/AuthModel";
+
 export async function showLogin(req: Request, res: Response) {
   res.render("login");
 }
