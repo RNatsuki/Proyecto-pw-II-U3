@@ -105,3 +105,11 @@ export async function showEditGame(req: Request, res: Response) {
 
   res.render("edit-game", { game: gameJSON });
 }
+
+export async function deleteGame(req: Request, res: Response) {
+  const { id } = req.params;
+
+  await GameModel.destroy({ where: { id } });
+
+  res.redirect("/dashboard");
+}
