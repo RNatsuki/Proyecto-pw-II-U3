@@ -106,10 +106,16 @@
                   class="py-2 px-4 border-b border-gray-600"
                 >{{this.title}}</td>
                 <td class="py-2 px-4 border-b border-gray-600">
-                  <div class="truncate w-[450px]">
-                    <!-- Añadir clase truncate -->
-                    {{this.description}}
-                  </div>
+                  <p
+                  style="
+                    width: 300px;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  "
+                  >
+                    <span class="truncate">{{this.description}}</span>
+                  </p>
                 </td>
                 <td class="py-2 px-4 border-b border-gray-600">
                   <img
